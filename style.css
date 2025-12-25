@@ -1,16 +1,16 @@
 body {
-    background: #111;
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin-top: 100px;
+  background: #111;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin-top: 100px;
 }
 
 button {
-    font-size: 24px;
-    padding: 20px 40px;
-    cursor: pointer;
-    background: #00ff88;
-    border: none;
-    border-radius: 10px;
+  font-size: 24px;
+  padding: 20px 40px;
+  background: #00ff88;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
 }
