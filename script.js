@@ -1,89 +1,33 @@
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
-
-let dino = {
-  x: 50,
-  y: 150,
-  width: 30,
-  height: 30,
-  vy: 0,
-  jumping: false
+const firebaseConfig = {
+  apiKey: "AIzaSyAmbd_r1UHeFoQXVPO6HyUHeFoQXVPO6HyUj7ZP9ioID0Lw",
+  authDomain: "ranking-dino.firebaseapp.com",
+  databaseURL: "https://ranking-dino-default-rtdb.firebaseio.com",
+  projectId: "ranking-dino",
+  storageBucket: "ranking-dino.firebasestorage.app",
+  messagingSenderId: "935308498886",
+  appId: "1:935308498886:web:c6dbf94d10f5a1e88904c7"
 };
 
-let obstacle = {
-  x: 800,
-  y: 150,
-  width: 20,
-  height: 30
-};
+// Inicializa Firebase
+firebase.initializeApp(firebaseConfig);
 
-let gravity = 0.6;
-let score = 0;
-let gameOver = false;
+// Referência do ranking
+const db = firebase.database();
+const rankingRef = db.ref("ranking");
 
-function drawDino() {
-  ctx.fillStyle = "green";
-  ctx.fillRect(dino.x, dino.y, dino.width, dino.height);
-}
+// ESCUTA EM TEMPO REAL
+rankingRef.on("value", snapshot => {
+  const ranking = document.getElementById("ranking");
+  ranking.innerHTML = "";
 
-function drawObstacle() {
-  ctx.fillStyle = "black";
-  ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
-}
+  const dados = snapshot.val();
+  if (!dados) return;
 
-function update() {
-  if (gameOver) return;
+  const lista = Object.values(dados).sort((a, b) => b.score - a.score);
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Dino
-  dino.y += dino.vy;
-  dino.vy += gravity;
-
-  if (dino.y >= 150) {
-    dino.y = 150;
-    dino.jumping = false;
-  }
-
-  // Obstáculo
-  obstacle.x -= 5;
-  if (obstacle.x < -20) {
-    obstacle.x = 800;
-    score++;
-    document.getElementById("score").innerText = score;
-  }
-
-  // Colisão
-  if (
-    dino.x < obstacle.x + obstacle.width &&
-    dino.x + dino.width > obstacle.x &&
-    dino.y < obstacle.y + obstacle.height &&
-    dino.y + dino.height > obstacle.y
-  ) {
-    gameOver = true;
-    alert("Game Over! Pontos: " + score);
-    location.reload();
-  }
-
-  drawDino();
-  drawObstacle();
-  requestAnimationFrame(update);
-}
-
-// Pular
-document.addEventListener("keydown", e => {
-  if (e.code === "Space" && !dino.jumping) {
-    dino.vy = -12;
-    dino.jumping = true;
-  }
+  lista.forEach(player => {
+    const li = document.createElement("li");
+    li.textContent = `${player.nome} - ${player.score} pts`;
+    ranking.appendChild(li);
+  });
 });
-
-// Toque no celular
-canvas.addEventListener("touchstart", () => {
-  if (!dino.jumping) {
-    dino.vy = -12;
-    dino.jumping = true;
-  }
-});
-
-update();
