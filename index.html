@@ -2,17 +2,19 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Dino Online</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Ranking Dino</title>
 </head>
 <body>
 
-  <h1>🦖 Dino Online</h1>
-  <p>Pontos: <span id="score">0</span></p>
+<h1>🏆 Ranking Dino</h1>
+<ul id="ranking"></ul>
 
-  <canvas id="game" width="800" height="200"></canvas>
-  <p>Pressione ESPAÇO ou TOQUE na tela para pular</p>
+<!-- Firebase v8 (compatível com HTML simples) -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-  <script src="script.js"></script>
+<!-- Seu script -->
+<script src="script.js"></script>
+
 </body>
 </html>
