@@ -2,36 +2,84 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Dino Simples + Ranking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Jogo de Pulo</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f7f7f7;
-      text-align: center;
+      margin: 0;
+      overflow: hidden; /* evita scroll */
+      touch-action: manipulation; /* evita gestos de zoom */
     }
-    canvas {
-      background: #fff;
-      border: 2px solid #000;
-      display: block;
-      margin: 20px auto;
+    #game {
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      position: relative;
     }
-    ul { list-style: none; padding: 0; }
+    #player {
+      width: 50px;
+      height: 50px;
+      background: red;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
   </style>
 </head>
 <body>
+  <div id="game">
+    <div id="player"></div>
+  </div>
 
-<h1>🦖 Dino Game</h1>
-<p>Pule com <b>ESPAÇO</b></p>
+  <script>
+    const player = document.getElementById("player");
+    let isJumping = false;
 
-<canvas id="game" width="600" height="200"></canvas>
+    function pular() {
+      if (isJumping) return; // evita pulo duplo
+      isJumping = true;
+      let jumpHeight = 150; // altura do pulo
+      let jumpSpeed = 5;
+      let originalBottom = parseInt(window.getComputedStyle(player).bottom);
 
-<h2>🏆 Ranking Online</h2>
-<ul id="ranking"></ul>
+      let upInterval = setInterval(() => {
+        let currentBottom = parseInt(window.getComputedStyle(player).bottom);
+        if (currentBottom >= originalBottom + jumpHeight) {
+          clearInterval(upInterval);
+          // descida
+          let downInterval = setInterval(() => {
+            let bottomNow = parseInt(window.getComputedStyle(player).bottom);
+            if (bottomNow <= originalBottom) {
+              clearInterval(downInterval);
+              isJumping = false;
+            } else {
+              player.style.bottom = (bottomNow - jumpSpeed) + "px";
+            }
+          }, 20);
+        } else {
+          player.style.bottom = (currentBottom + jumpSpeed) + "px";
+        }
+      }, 20);
+    }
 
-<!-- Firebase (HTML simples) -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    // Teclado (PC)
+    document.addEventListener("keydown", e => {
+      if (e.code === "Space") {
+        pular();
+      }
+    });
 
-<script src="script.js"></script>
+    // Toque (Celular)
+    document.addEventListener("touchstart", e => {
+      e.preventDefault(); // bloqueia zoom e scroll
+      pular();
+    }, { passive: false });
+
+    // Clique (PC com mouse)
+    document.addEventListener("click", e => {
+      pular();
+    });
+  </script>
 </body>
 </html>
