@@ -2,19 +2,36 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Ranking Dino</title>
+  <title>Dino Simples + Ranking</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      text-align: center;
+    }
+    canvas {
+      background: #fff;
+      border: 2px solid #000;
+      display: block;
+      margin: 20px auto;
+    }
+    ul { list-style: none; padding: 0; }
+  </style>
 </head>
 <body>
 
-<h1>🏆 Ranking Dino</h1>
+<h1>🦖 Dino Game</h1>
+<p>Pule com <b>ESPAÇO</b></p>
+
+<canvas id="game" width="600" height="200"></canvas>
+
+<h2>🏆 Ranking Online</h2>
 <ul id="ranking"></ul>
 
-<!-- Firebase v8 (compatível com HTML simples) -->
+<!-- Firebase (HTML simples) -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-<!-- Seu script -->
 <script src="script.js"></script>
-
 </body>
 </html>
